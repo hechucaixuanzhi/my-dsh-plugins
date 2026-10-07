@@ -2,68 +2,91 @@
 
 中文 | [English](README.en.md)
 
-面向 DeepSeek Harness 桌面版的独立社区插件集合。一个仓库统一管理，每个插件有自己的目录、版本、说明和安装包；**本仓库不是官方发行版，也不是一个整合安装包**。
+面向 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 桌面版的开源社区插件集合。每个插件独立安装、独立版本管理。
 
-## 插件目录
+本项目非 DeepSeek 官方项目。仓库根目录不是插件安装包，请按下方说明安装所需插件。
 
-| 插件 | 最新版本 | 已适配 DSH | 用途 | 安装 |
+## 插件列表
+
+| 插件 | 最新版本 | 兼容 DSH | 功能 | 下载 |
 | --- | --- | --- | --- | --- |
-| [侧边会话 / Session Panel](plugins/session-panel/README.md) | `2.4.0-dsh020rc2.9` | `0.2.0-rc.2` 桌面版 | 独立侧边 Agent；只读查看所属主对话的消息、轨迹与运行状态 | [独立安装包](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) |
+| [侧边会话 / Session Panel](plugins/session-panel/README.md) | `2.4.0-dsh020rc2.9` | `0.2.0-rc.2` 桌面版 | 独立侧边 Agent；只读查看主对话的消息、执行轨迹和运行状态 | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) |
 
-目前只收录侧边会话。酒馆、壁纸和宠物是不同插件，未随本次发布混入。
+## 使用前准备
 
-## 安装
+- 安装兼容版本的 DSH Desktop，具体版本见插件列表。
+- 在 DSH 中完成账号或模型配置，确认普通对话可以正常使用。
+- 插件复用 DSH 已配置的模型与权限，无需另填模型密钥；模型调用仍按所选提供方的规则计费。
 
-### 推荐：在桌面版粘贴安装包地址
+## 快速安装
 
-先确认 DSH Desktop 为 `0.2.0-rc.2`。打开左侧「插件 → 添加插件」，在「包名或地址」输入框粘贴下面这一整行，**不是填进“安装源 / 自定义地址”**：
+以下以侧边会话插件为例。
+
+1. 打开 DSH 左侧「插件 → 添加插件」。
+2. 将下面的完整链接粘贴到「包名或地址」输入框，**不是“安装源 / 自定义地址”**。
 
 ```text
 https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/session-panel-v2.4.0-dsh020rc2.9/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
 ```
 
-1. 「安装源」保持默认、npm 官方源或中国大陆镜像源即可。它选择 npm 下载源，不是填写 GitHub 仓库地址的位置；下载依赖时仍可能使用该源。
-2. 点击「安装」，等待完成，在已安装列表确认 `@dsh-local/session-panel` 已启用。当前包未发布到 npm，不能仅填写这个包名安装。
-3. 保存未发送草稿、等待任务结束后，使用应用菜单「退出」或托盘「退出」完整关闭，再打开 DSH；不要只刷新页面或点击窗口右上角的关闭按钮。
-4. 展开右侧栏，在「开始 → 侧边会话」打开；右栏收起时可按 `Ctrl + Alt + B`。
+3. 「安装源」可保持默认，或使用 npm 官方源、中国大陆镜像源。该选项用于 npm 包及依赖下载，不是 GitHub 地址输入框。
+4. 点击「安装」，完成后确认 `@dsh-local/session-panel` 已启用。
+5. 保存草稿、等待任务结束，通过应用菜单或托盘「退出」完整关闭 DSH，再重新打开。只刷新页面或关闭窗口可能不会重启应用。
+6. 在右侧栏「开始 → 侧边会话」打开插件。右栏收起时可按 `Ctrl + Alt + B`。
 
-### 备选：本地文件或单插件目录
+### 本地安装
 
-GitHub 下载失败时，可自行从 [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) 下载 `.tgz`，**无需解压**，再将以下形式填进同一个输入框（替换为实际保存路径，不带引号）：
+如果无法直接下载安装包，可在 [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) 下载独立 `.tgz` 文件，无需解压，然后在同一输入框填写本地绝对路径。例如：
 
 ```text
 file:D:/DSH-plugins/downloads/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
 ```
 
-也可下载并解压本仓库，填入其中 `plugins/session-panel` 的绝对目录。例如仓库解压到 `D:/DSH-plugins/my-dsh-plugins` 时：
+请替换为文件的实际保存位置，不带引号。也可从仓库中的单插件目录安装，详见[完整安装与排错指南](plugins/session-panel/README.md#安装升级与卸载)。
 
-```text
-D:/DSH-plugins/my-dsh-plugins/plugins/session-panel
-```
+当前插件未发布到 npm，不能仅填写包名安装。整个仓库地址、仓库根目录以及 GitHub 自动生成的 Source code 压缩包都不是单插件安装入口。
 
-以上目录只是示例，须实际存在。不要填写整个仓库的 GitHub 地址、GitHub 的 `tree/...` 网页、仓库根目录、`plugins` 父目录或 GitHub 自动生成的 Source code 压缩包：它们不是此插件的独立安装包。
+## 使用侧边会话
 
-若显示「路径不存在或不是有效的插件包」，检查是否填了绝对路径、文件是否已下载，或目录中是否直接包含 `package.json` 和 `cordis.patch.yml`。升级时当前界面要求先卸载旧包再安装新版；不要清空 DSH 数据。完整步骤和排错见[插件说明](plugins/session-panel/README.md#安装升级与卸载)。
+侧边会话为每个主对话提供独立的聊天历史和草稿，复用官方聊天组件，支持流式回复、图片、附件、`@`、`/`、模型选择和任务停止。
 
-安装形式参考[官方插件管理说明](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/boot/plugin-manager/README.md)；本插件兼容性仍以以上固定版本为准。
+主任务运行期间，可以在侧边询问：
 
-不需要额外填写模型密钥；使用 DSH 已配置的模型与权限。插件仍会产生所选模型正常的调用费用。仅声明兼容表中的版本，不保证新版 DSH 自动兼容。
+> 主对话现在进行到哪一步？请根据执行记录说明最近完成的工作。
+>
+> 主对话里提到的这个技术名词是什么意思？请结合当前任务解释。
 
-## 使用边界
+侧边 Agent 也可以独立处理获准任务。主对话观察接口是只读的，不会向主对话发送消息；停止任一侧任务不会停止另一侧。
 
-- 侧边会话独立于主对话，可以执行获准任务；只读观察入口不向主对话投递内容。
-- 主对话摘要及按需读取的记录会进入侧 Agent 的模型上下文，可能包含私人内容。发送前请考虑所选模型提供方及账号的数据策略。
-- 插件和通用工具运行在本机用户权限下，不是操作系统级沙箱。工作区、模型上下文及账号由 DSH 管理，不会随本仓库分发。
-- 详细验收范围、断线恢复边界和隐私说明见[发布检查记录](docs/release-checks/session-panel.md)及 [SECURITY.md](SECURITY.md)。
+更多功能、数据处理方式与限制请参阅[侧边会话文档](plugins/session-panel/README.md)。
 
-## 更新规则
+## 升级与兼容性
 
-**每次增加或更新插件，必须在同一个提交中同步更新本文件和 [README.en.md](README.en.md)。** 同时更新该插件的中英文 README、CHANGELOG 和必要的版本号，保持版本、兼容范围、安装入口、功能与限制一致。
+- 升级前查看插件的 [CHANGELOG](plugins/session-panel/CHANGELOG.md) 和兼容版本。
+- 当前 DSH 界面不支持插件自动更新，请停用并卸载旧插件，再安装新版，随后完整退出并重开 DSH。
+- 不需要删除会话历史、清空账号配置或卸载其他插件。
+- 仅声明支持插件列表中的 DSH 版本；升级 DSH 后应先确认插件兼容性。
 
-仓库检查与 GitHub Actions 会对缺少双语总 README 更新的插件变更报错；不是仅靠口头约定。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)。检查通过并不等于未测试的桌面版本或场景已验收，也不等于仓库已设置分支保护。
+## 安全与隐私
 
-## 开发与许可
+- 插件和通用工具以本机用户权限运行，不是操作系统级沙箱。安装前请确认来源并审阅所需权限。
+- 侧边 Agent 读取的主对话内容会进入所选模型的上下文，可能包含私人信息，请留意模型提供方的数据策略。
+- 本仓库不分发账号配置、密钥或聊天历史。侧边会话插件不额外添加遥测或独立云端服务。
 
-使用 Node.js 24，无需安装仓库依赖即可执行 `npm test` 和 `npm run check`。安装包只取插件的明确文件清单；`dist/`、本机配置、凭据、会话、日志、截图和测试环境不得提交。
+安全问题及脱敏要求见 [SECURITY.md](SECURITY.md)。
 
-本仓库自有代码采用 [MIT](LICENSE)。对接 DeepSeek Harness 的来源与声明见 [NOTICE.md](plugins/session-panel/NOTICE.md)。后续第三方插件必须分别保留原许可证和素材来源，不能直接沿用本仓库的原创声明。
+## 文档与反馈
+
+- [侧边会话使用指南](plugins/session-panel/README.md)
+- [发布与验证说明](docs/release-checks/session-panel.md)
+- [问题反馈与功能建议](https://github.com/hechucaixuanzhi/my-dsh-plugins/issues)
+
+反馈时请提供 DSH 版本、插件版本、复现步骤和脱敏后的截图，不要上传密钥、账号配置或完整会话文件。
+
+## 参与贡献
+
+欢迎提交问题、文档改进和插件适配。开发环境、检查命令及贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+## 许可证
+
+本仓库自有代码采用 [MIT License](LICENSE)。DeepSeek Harness 相关归属与上游许可见 [NOTICE.md](plugins/session-panel/NOTICE.md)。

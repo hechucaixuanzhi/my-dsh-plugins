@@ -63,30 +63,49 @@ The example directory must actually exist; do not paste it without adjusting it.
 - **Repository URL or Source code archive entered**: the whole repository, a GitHub `tree/...` page and generated Source code archives are not installation entries for this plugin. Use the Release's standalone `.tgz` or Method 3's single-plugin directory.
 - **Missing entry or resource 404 after installation**: check enabled status and the DSH version, save drafts, wait for tasks to finish, fully quit/reopen and expand the right pane. Do not delete conversations or clear account data.
 
-Install forms follow the [official plugin-manager documentation](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/boot/plugin-manager/README.md) and were checked against the installed `0.2.0-rc.2` spec parser. This does not mean an installation was performed on your behalf in this documentation update.
+See the [official plugin-manager documentation](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/boot/plugin-manager/README.md) for install-address forms. Download and installation depend on your network, file paths and DSH version.
 
 ### Upgrade and uninstall
 
 For upgrades, use the current official plugin-management flow to disable/uninstall the old package and install the new one. Do not delete session logs, clear account settings or disable unrelated plugins. Removing the plugin is not the same as removing DSH-managed history; use official data-management tools and back up first if deletion is intended.
 
-No dependency on SillyTavern, wallpaper or pet plugins, no core patches, and no extra model key. Compatibility is pinned to `0.2.0-rc.2`; a few internal Controller interfaces require revalidation after DSH upgrades.
+The plugin installs independently without patching DSH core or requiring another model key. It uses DSH's configured models and permissions; model calls remain subject to the provider's billing rules.
+
+## Usage examples
+
+Open Session Panel within a main conversation and ask, for example:
+
+> What stage is the main task at? Use its execution trajectory to explain recently completed work and separate confirmed facts from inference.
+>
+> What does this technical term in the main conversation mean? Explain it for a beginner in the context of the current task.
+>
+> Summarize the purpose and result of the main conversation's most recent tool call using read-only access. Clearly state if no result has arrived yet.
+
+Each main conversation has its own side session. Switching the main conversation switches to its associated side history and draft. The side Agent can also perform separate authorized tasks; its main-observation interface remains read-only.
 
 ## Data and permissions
 
 - DSH persists the session history; the package and browser localStorage do not store chats. Stable namespaces derive a side-session identity from each main conversation.
 - Older per-main depth-one side sessions can migrate using the official inherited-prefix contract into hidden, independent depth-zero roots. Old logs are retained; running legacy Agents or invalid identities stop migration rather than forcing an overwrite.
-- This public package removes a development-machine-specific legacy singleton identifier. That singleton is outside public migration support. Deterministic per-main migration and metadata-based side-session checks remain.
+- History migration covers older per-main side sessions only. Early singleton-mode history migration is not supported.
 - Automatic main context contains the latest 36 messages, 20 steps and 24 event summaries. Tool summaries are capped at 1200 characters; step summaries at 160. The read-only tool retrieves older records in pages of up to 30 or long-event chunks of up to 12000 characters. Pin a snapshot within one pagination pass; acquire a fresh snapshot to inspect newly added progress.
 - The old summary endpoint's 240-entry cap does not delete durable history. Model context is still constrained by official windows and compaction; unavailable or unrecorded content cannot be recovered magically.
 - While the main task runs, a tool-category guard pauses potential conflicts. Explicit authorization applies to the current side task and expires on idle. Tool-name checks and instructions are not a security sandbox; unknown tools and general terminals still require care.
 - Main records enter the selected side model's context. There is no added telemetry or separate cloud backend, but the plugin cannot guarantee a model provider's privacy practices. Never post credentials, private logs or unredacted session screenshots to public Issues.
 
-## Acceptance and limitations
+## Compatibility and limitations
 
-Basic manual acceptance passed on `.8`: main-trajectory explanation, images/`@`/`/`, history/draft isolation, close/reopen, scrolling/resizing, reply presentation and bidirectional stop isolation. `.9` prepares the public release: unchanged client behavior, removal of an installation-specific identifier, and publication metadata/documentation. The public copy receives separate regression checks; `.8` manual evidence is not presented as exhaustive `.9` runtime validation.
+- This version supports only DSH Desktop `0.2.0-rc.2`. It uses some internal Controller interfaces; confirm compatibility before upgrading DSH.
+- Plugin-specific prompts and labels are primarily Chinese. Bilingual documentation does not mean the interface is fully localized.
+- Offline regression and disconnect fault-injection checks do not validate every native network interruption, third-party tool or future DSH release.
+- After first installation, send a short message and switch between two main conversations to check history and draft isolation. Do not deliberately disconnect the network during important tasks.
 
-Recovery has offline fault-injection evidence using the actual official state machines, not exhaustive validation of every native network interruption. After installation, send a short message and check drafts across two main conversations. Do not disconnect the whole machine during important tasks just to test recovery.
+See the [release and validation notes](../../docs/release-checks/session-panel.md) for version provenance and the scope of manual acceptance and automated checks.
 
-See the [release checks](../../docs/release-checks/session-panel.md). Report DSH/plugin versions, reproduction steps and redacted screenshots, not configuration directories or real session files.
+## Feedback
 
-License: [MIT](LICENSE). Attribution: [NOTICE.md](NOTICE.md). Updates: [CHANGELOG.md](CHANGELOG.md).
+Report bugs or request features through [GitHub Issues](https://github.com/hechucaixuanzhi/my-dsh-plugins/issues). Include the DSH version, plugin version, reproduction steps, expected and actual behavior, and any necessary redacted screenshots. Do not upload keys, account configuration or complete session files. Read [SECURITY.md](../../SECURITY.md) before reporting a security issue.
+
+## License
+
+This plugin is licensed under the [MIT License](LICENSE). See [NOTICE.md](NOTICE.md) for upstream attribution and licensing, and [CHANGELOG.md](CHANGELOG.md) for version history.
