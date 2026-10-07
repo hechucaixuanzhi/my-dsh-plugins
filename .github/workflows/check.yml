@@ -26,6 +26,9 @@ jobs:
           CHECK_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
       - name: Portable offline tests (no account or model requests)
         run: npm test
-      - name: Inspect standalone package allowlist
+      - name: Inspect Session Panel package allowlist
         working-directory: plugins/session-panel
+        run: npm pack --dry-run --json --ignore-scripts
+      - name: Inspect Wallpaper Bridge package allowlist
+        working-directory: plugins/wallpaper-bridge
         run: npm pack --dry-run --json --ignore-scripts

@@ -1,0 +1,27 @@
+{
+  "name": "@dsh-local/we-skin",
+  "version": "0.3.6-dsh020rc2.1",
+  "description": "DSH Wallpaper Bridge | DSH 壁纸桥 — Wallpaper Engine backgrounds and adaptive themes for DSH Desktop.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client-v2.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "inject": ["@deepseek-ai/dsh-client-runtime", "@deepseek-ai/dsh-client-ui-theme", "@deepseek-ai/dsh-client-ui-slots"],
+      "platform": "web"
+    }
+  },
+  "peerDependencies": { "@deepseek-ai/dsh": "0.2.0-rc.2" },
+  "peerDependenciesMeta": { "@deepseek-ai/dsh": { "optional": true } },
+  "engines": { "node": ">=24" },
+  "files": ["lib/index.js", "lib/client-v2.js", "lib/we.js", "lib/art.js", "lib/pkg.js", "cordis.patch.yml", "README.md", "README.en.md", "CHANGELOG.md", "LICENSE", "NOTICE.md"],
+  "repository": { "type": "git", "url": "https://github.com/hechucaixuanzhi/my-dsh-plugins.git", "directory": "plugins/wallpaper-bridge" },
+  "homepage": "https://github.com/hechucaixuanzhi/my-dsh-plugins/tree/main/plugins/wallpaper-bridge",
+  "bugs": { "url": "https://github.com/hechucaixuanzhi/my-dsh-plugins/issues" },
+  "license": "MIT"
+}

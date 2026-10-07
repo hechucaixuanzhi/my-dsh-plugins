@@ -2,7 +2,7 @@
 
 ## 中文
 
-每个插件是一个独立模块，不在仓库根注册 `dsh.bundle`。当前发布包由 `plugins/session-panel` 生成。
+每个插件是一个独立模块，不在仓库根注册 `dsh.bundle`。当前分别从 `plugins/session-panel` 和 `plugins/wallpaper-bridge` 生成独立发布包。
 
 ### 开发环境与检查
 
@@ -30,11 +30,13 @@ GitHub Actions 会对缺少上述双语文档同步的插件变更报错。检�
 
 插件打包使用 `npm pack --ignore-scripts`，输出放在被忽略的 `dist/`，而不是提交二进制归档。确认 tar 内只含公开插件文件，再以 `插件名-v版本号` 创建独立 GitHub Release，上传该插件 tgz。未来其他插件保持各自 tag/Release，不混入当前包。
 
+实际归档检查：`node scripts/inspect-package.mjs <插件目录名> <tgz路径>`。检查逐文件比对公开源码、文件白名单和常见敏感模式，不解压到工作目录，不运行安装脚本。
+
 CI 的基线来自提交/PR，不运行安装脚本或依赖安装，不读取本机 DSH 数据。使用 `DSH_ASAR` 指定合法取得的当前 DSH 安装归档时，可额外运行真实官方状态机离线测试；未设置时明确跳过，不能写成已通过。该归档及其内容不得随测试提交。
 
 ## English
 
-Each plugin is an independent module; the repository root does not register a `dsh.bundle`. Build the current package from `plugins/session-panel`.
+Each plugin is an independent module; the repository root does not register a `dsh.bundle`. Build separate packages from `plugins/session-panel` and `plugins/wallpaper-bridge`.
 
 ### Development environment and checks
 
@@ -61,5 +63,7 @@ Run `npm test` and `npm run check`. Stage explicitly named public files, then ru
 GitHub Actions fails plugin changes missing the synchronized bilingual documents above. Passing checks do not validate untested DSH versions or native scenarios, or imply that branch protection is configured. Public READMEs describe features, installation, compatibility and limitations for users; complete maintenance procedures belong in this guide and `AGENTS.md`.
 
 Use `npm pack --ignore-scripts`, with output in ignored `dist/`, rather than committing binary archives. Inspect the tar contents before creating a per-plugin GitHub Release tagged `plugin-slug-vVERSION` and uploading that plugin's tgz. Future plugins keep separate tags/releases and are not bundled into this package.
+
+Inspect the actual archive with `node scripts/inspect-package.mjs <plugin-slug> <tgz-path>`. It compares every file with public source, checks the allowlist and common sensitive patterns, without extracting into the worktree or running install scripts.
 
 CI checks the commit/PR baseline without installing dependencies, running install scripts or reading local DSH data. Set `DSH_ASAR` to a legitimately obtained current DSH installation archive to run additional offline tests with real official state machines. Without it, those tests explicitly skip, not pass. Never commit the archive or its contents.

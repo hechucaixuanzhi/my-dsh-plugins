@@ -54,7 +54,8 @@ for (const name of manifests) {
     let before; try { before = JSON.parse(git(['show', `${base}:${name}`])); } catch { /* new plugin */ }
     if (before?.version === version) issues.push(`${name}: runtime/manifest changes require a version bump`);
   }
-  for (const file of [pkg.main, 'lib/client.js']) {
+  // Validate every shipped JavaScript file, including nonstandard client names.
+  for (const file of (pkg.files || []).filter(file => file.endsWith('.js'))) {
     if (file && unique.includes(prefix + file)) {
       try { execFileSync(process.execPath, ['--check', ...(staged ? ['--input-type=module', '-'] : [path.join(root, prefix, file)])],
         { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], ...(staged ? { input: read(prefix + file) } : {}) }); }

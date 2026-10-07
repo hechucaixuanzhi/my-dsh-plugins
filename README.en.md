@@ -11,12 +11,13 @@ This project is not affiliated with DeepSeek. The repository root is not an inst
 | Plugin | Latest version | Compatible DSH | Features | Download |
 | --- | --- | --- | --- | --- |
 | [Session Panel / 侧边会话](plugins/session-panel/README.en.md) | `2.4.0-dsh020rc2.9` | Desktop `0.2.0-rc.2` | Independent side Agent with read-only access to the main conversation's messages, execution trajectory and activity | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) |
+| [DSH Wallpaper Bridge / 壁纸桥](plugins/wallpaper-bridge/README.en.md) | `0.3.6-dsh020rc2.1` (prerelease) | Windows Desktop `0.2.0-rc.2` | Local Wallpaper Engine backgrounds, adaptive colors and transparency; static artwork only for scenes | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/wallpaper-bridge-v0.3.6-dsh020rc2.1) |
 
 ## Prerequisites
 
 - Install a compatible DSH Desktop version listed above.
-- Configure an account or model in DSH and confirm ordinary conversations work.
-- Plugins reuse DSH's configured models and permissions without requiring another model key. Model calls remain subject to the selected provider's billing rules.
+- Session Panel: configure an account/model in DSH and confirm ordinary conversations work. It reuses existing models/permissions without another key; calls follow the provider's billing rules.
+- Wallpaper Bridge: install Wallpaper Engine locally and apply a wallpaper. No model configuration or calls are needed. Native installation acceptance of the public copy is pending; see [validation scope](docs/release-checks/wallpaper-bridge.md).
 
 ## Quick start
 
@@ -44,7 +45,19 @@ file:D:/DSH-plugins/downloads/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
 
 Replace the example with the file's actual location, without quotes. Installing a single-plugin directory from a checkout is also supported; see the [complete installation and troubleshooting guide](plugins/session-panel/README.en.md#install-upgrade-and-uninstall).
 
-The current plugin is not published to npm, so its package name alone is not an installation source. The whole repository URL, its root directory and GitHub's generated Source code archives are not standalone plugin installation entries.
+Neither current plugin is published to npm, so package names alone are not installation sources. The whole repository URL, its root directory and GitHub's generated Source code archives are not standalone plugin installation entries.
+
+### Install DSH Wallpaper Bridge
+
+Paste the separate Wallpaper Bridge package URL into the same **Add plugin** input:
+
+```text
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/wallpaper-bridge-v0.3.6-dsh020rc2.1/dsh-local-we-skin-0.3.6-dsh020rc2.1.tgz
+```
+
+Confirm `@dsh-local/we-skin` is enabled, save drafts, wait for tasks to finish and fully quit/reopen DSH. Open **Settings → DSH 壁纸桥**. The public name changes; the internal package name and configuration locations are retained. Images, browser-decodable video and limited web wallpapers are supported. **Scenes use extracted static artwork or previews, not dynamic scene effects.**
+
+See the [Wallpaper Bridge guide](plugins/wallpaper-bridge/README.en.md) for local installation, discovery failures, upgrades and limitations. No Workshop assets are bundled.
 
 ## Using Session Panel
 
@@ -62,7 +75,7 @@ See the [Session Panel documentation](plugins/session-panel/README.en.md) for ca
 
 ## Upgrades and compatibility
 
-- Check the plugin's [CHANGELOG](plugins/session-panel/CHANGELOG.md) and compatible DSH version before upgrading.
+- Before upgrading, check the relevant [Session Panel CHANGELOG](plugins/session-panel/CHANGELOG.md) or [Wallpaper Bridge CHANGELOG](plugins/wallpaper-bridge/CHANGELOG.md) and compatible DSH version.
 - The current DSH UI does not automatically update plugins. Disable and uninstall the old plugin, install the new version, then fully quit and reopen DSH.
 - Do not delete conversation history, clear account configuration or remove unrelated plugins.
 - Support is limited to the DSH version listed above. Confirm plugin compatibility before upgrading DSH.
@@ -72,13 +85,15 @@ See the [Session Panel documentation](plugins/session-panel/README.en.md) for ca
 - Plugins and general tools run with the local user's privileges, not in an OS sandbox. Review the source and required permissions before installing.
 - Main-conversation records read by the side Agent enter the selected model's context and may contain private information. Review your model provider's data policies.
 - This repository does not distribute account configuration, keys or chat history. Session Panel adds no telemetry or separate cloud backend.
+- Wallpaper Bridge reads no chats or model keys. It reads local WE settings/artwork and saves its own display settings/static-image cache. Web wallpapers remain third-party code; use trusted assets. [Isolation and network limits](plugins/wallpaper-bridge/README.en.md#security-privacy-and-artwork) are not a complete security sandbox.
 
 See [SECURITY.md](SECURITY.md) for security reporting and redaction guidance.
 
 ## Documentation and feedback
 
 - [Session Panel user guide](plugins/session-panel/README.en.md)
-- [Release and validation notes](docs/release-checks/session-panel.md)
+- [Wallpaper Bridge user guide](plugins/wallpaper-bridge/README.en.md)
+- [Session Panel validation](docs/release-checks/session-panel.md) · [Wallpaper Bridge validation](docs/release-checks/wallpaper-bridge.md)
 - [Bug reports and feature requests](https://github.com/hechucaixuanzhi/my-dsh-plugins/issues)
 
 Include the DSH version, plugin version, reproduction steps and redacted screenshots in reports. Do not upload keys, account configuration or complete session files.
@@ -89,4 +104,4 @@ Issues, documentation improvements and plugin adaptations are welcome. See [CONT
 
 ## License
 
-Original repository code is licensed under the [MIT License](LICENSE). See [NOTICE.md](plugins/session-panel/NOTICE.md) for DeepSeek Harness attribution and upstream licensing.
+Original repository code is licensed under the [MIT License](LICENSE). Plugins retain their own licenses and attribution: [Session Panel](plugins/session-panel/NOTICE.md), [Wallpaper Bridge](plugins/wallpaper-bridge/NOTICE.md). Code licensing does not grant artwork rights.
