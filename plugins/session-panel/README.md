@@ -20,10 +20,52 @@
 
 ## 安装、升级与卸载
 
-1. 从 [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) 下载 `dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz`。
-2. 在「插件 → 添加插件」填写 `file:<下载文件的绝对路径>`。也可以选择本仓库 `plugins/session-panel` 的本地绝对目录，不能选择父目录或直接把整个仓库作为插件。
-3. 启用后，在保存草稿、运行任务结束的安全时机，完整退出并重新打开 DSH。单独刷新可能仍使用旧插件清单并出现资源 404。
-4. 展开右侧栏，在「开始」页选择「侧边会话」。若整个右栏收起，可用官方右栏开关或 `Ctrl + Alt + B` 展开。
+### 方式一：直接粘贴安装包地址（推荐）
+
+确认 DSH Desktop 为 `0.2.0-rc.2`，打开左侧「插件 → 添加插件」。将下面整行粘贴到「包名或地址」输入框：
+
+```text
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/session-panel-v2.4.0-dsh020rc2.9/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
+```
+
+1. 「安装源」保持默认、npm 官方源或中国大陆镜像源即可；它选择 npm 下载源，下载依赖时仍可能使用。**不要把上面的地址填进“安装源 / 自定义地址”。**
+2. 点击「安装」，等待完成，在已安装列表中确认 `@dsh-local/session-panel` 已启用。
+3. 保存草稿、等待运行任务结束，通过应用菜单「退出」或托盘「退出」完整关闭 DSH，再重新打开。单独刷新可能仍使用旧插件清单并出现资源 404；窗口右上角关闭按钮也可能只是隐藏窗口。
+4. 展开右侧栏，在「开始」页选择「侧边会话」。右栏收起时，可用官方右栏开关或 `Ctrl + Alt + B` 展开。
+
+无需先手动下载或解压。这个地址指向单插件 Release 安装包，不是整个仓库。
+
+### 方式二：先下载，再从本地文件安装
+
+从 [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) 的 Assets 下载 `dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz`，**无需解压**。例如自行保存到 `D:/DSH-plugins/downloads` 后，在同一个「包名或地址」框填写：
+
+```text
+file:D:/DSH-plugins/downloads/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
+```
+
+路径须换成实际保存位置，包含完整文件名，不带引号。然后按方式一的安装、启用、完整退出和打开入口步骤操作。
+
+### 方式三：从仓库里的单插件目录安装
+
+下载并解压仓库后，定位到 `plugins/session-panel`，确认该目录直接包含 `package.json`、`cordis.patch.yml` 和 `lib`。例如仓库放在 `D:/DSH-plugins/my-dsh-plugins`，在「包名或地址」框填写：
+
+```text
+D:/DSH-plugins/my-dsh-plugins/plugins/session-panel
+```
+
+示例目录须实际存在，不能只照抄后粘贴。不要选仓库根目录或 `plugins` 父目录；本仓库根不是可安装 Bundle。使用本地目录安装时，请保留该目录，避免安装来源失效。
+
+### 常见问题
+
+- **“路径不存在或不是有效的插件包”**：确认本地绝对路径存在；目录应直接包含插件清单，而不是多包集合。路径格式可参考以上 Windows 示例。
+- **GitHub 地址安装失败**：先用浏览器下载独立 `.tgz`，再采用方式二。切换 npm 镜像源不等于提供 GitHub 下载代理。
+- **填写包名却找不到包**：当前未发布 npm 版本，`@dsh-local/session-panel` 只是包身份；请用以上独立安装包地址或本地路径。
+- **填写仓库链接或 Source code 压缩包**：整个仓库、GitHub `tree/...` 网页和自动生成的 Source code 归档都不是本插件安装入口。请选择 Release 的独立 `.tgz` 或方式三的单插件目录。
+- **安装后找不到入口或显示资源 404**：确认启用状态及 DSH 版本，保存草稿、等待任务结束后完整退出重开，再展开右栏。不需要删除会话或清空账号数据。
+
+安装形式依据[官方插件管理说明](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/boot/plugin-manager/README.md)，并对照当前 `0.2.0-rc.2` 安装解析逻辑核对；这不代表已替你执行本轮安装。
+
+### 升级与卸载
 
 升级请按当前官方插件管理流程停用/卸载旧包，再安装新版。不要删除会话日志、清空账号配置或禁用其他插件作为升级步骤。插件卸载不等于删除 DSH 保存的历史；如需删除历史，请使用官方数据管理流程并先备份。
 

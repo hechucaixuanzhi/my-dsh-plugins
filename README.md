@@ -14,10 +14,38 @@
 
 ## 安装
 
-1. 打开对应插件的 Release，下载它自己的 `.tgz` 文件，不要把整个仓库地址当作单个插件安装。
-2. 在 DSH 的「插件 → 添加插件」中填写下载文件的本地绝对路径（`file:` 安装源）；或下载本仓库后，选择 `plugins/session-panel` 的本地绝对目录，而不是仓库根目录。
-3. 启用插件。保存未发送草稿、等待任务结束后，完整退出并重新打开桌面应用；不要只刷新页面。
-4. 侧边会话入口位于右侧「开始 → 侧边会话」。详见[插件说明](plugins/session-panel/README.md)。
+### 推荐：在桌面版粘贴安装包地址
+
+先确认 DSH Desktop 为 `0.2.0-rc.2`。打开左侧「插件 → 添加插件」，在「包名或地址」输入框粘贴下面这一整行，**不是填进“安装源 / 自定义地址”**：
+
+```text
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/session-panel-v2.4.0-dsh020rc2.9/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
+```
+
+1. 「安装源」保持默认、npm 官方源或中国大陆镜像源即可。它选择 npm 下载源，不是填写 GitHub 仓库地址的位置；下载依赖时仍可能使用该源。
+2. 点击「安装」，等待完成，在已安装列表确认 `@dsh-local/session-panel` 已启用。当前包未发布到 npm，不能仅填写这个包名安装。
+3. 保存未发送草稿、等待任务结束后，使用应用菜单「退出」或托盘「退出」完整关闭，再打开 DSH；不要只刷新页面或点击窗口右上角的关闭按钮。
+4. 展开右侧栏，在「开始 → 侧边会话」打开；右栏收起时可按 `Ctrl + Alt + B`。
+
+### 备选：本地文件或单插件目录
+
+GitHub 下载失败时，可自行从 [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) 下载 `.tgz`，**无需解压**，再将以下形式填进同一个输入框（替换为实际保存路径，不带引号）：
+
+```text
+file:D:/DSH-plugins/downloads/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
+```
+
+也可下载并解压本仓库，填入其中 `plugins/session-panel` 的绝对目录。例如仓库解压到 `D:/DSH-plugins/my-dsh-plugins` 时：
+
+```text
+D:/DSH-plugins/my-dsh-plugins/plugins/session-panel
+```
+
+以上目录只是示例，须实际存在。不要填写整个仓库的 GitHub 地址、GitHub 的 `tree/...` 网页、仓库根目录、`plugins` 父目录或 GitHub 自动生成的 Source code 压缩包：它们不是此插件的独立安装包。
+
+若显示「路径不存在或不是有效的插件包」，检查是否填了绝对路径、文件是否已下载，或目录中是否直接包含 `package.json` 和 `cordis.patch.yml`。升级时当前界面要求先卸载旧包再安装新版；不要清空 DSH 数据。完整步骤和排错见[插件说明](plugins/session-panel/README.md#安装升级与卸载)。
+
+安装形式参考[官方插件管理说明](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/boot/plugin-manager/README.md)；本插件兼容性仍以以上固定版本为准。
 
 不需要额外填写模型密钥；使用 DSH 已配置的模型与权限。插件仍会产生所选模型正常的调用费用。仅声明兼容表中的版本，不保证新版 DSH 自动兼容。
 

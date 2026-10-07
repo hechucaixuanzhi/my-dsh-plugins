@@ -20,10 +20,52 @@ Reusing official components is not a claim that every third-party tool or future
 
 ## Install, upgrade and uninstall
 
-1. Download `dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz` from the [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9).
-2. In **Plugins → Add plugin**, enter `file:<absolute-path-to-downloaded-file>`. Alternatively, select the absolute local directory of `plugins/session-panel` in this repository. Do not select its parent or install the entire repository as one plugin.
-3. After enabling, save drafts and wait for running tasks to finish, then fully quit and reopen DSH. A page refresh may reuse the old injection manifest and produce resource 404 errors.
-4. In the right-hand **Start** page choose **侧边会话**. If the whole right pane is collapsed, use its official toggle or `Ctrl + Alt + B`.
+### Method 1: paste the package URL directly (recommended)
+
+Confirm DSH Desktop is `0.2.0-rc.2`, then open **Plugins → Add plugin** in the left sidebar. Paste the complete line below into **Package name or address**:
+
+```text
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/session-panel-v2.4.0-dsh020rc2.9/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
+```
+
+1. Keep the default, official npm or Mainland China registry. This selects the npm download source, which dependencies may still use. **Do not put the URL above into Registry / Custom address.**
+2. Click **Install**, wait for completion and confirm `@dsh-local/session-panel` is enabled in the installed list.
+3. Save drafts and wait for active tasks to finish. Fully quit using the application menu's **Exit/Quit** or the tray's **Quit**, then reopen DSH. Refreshing may reuse the old injection manifest and produce resource 404 errors; the window's close button may only hide the window.
+4. Choose **侧边会话** from the right-hand **Start** page. If collapsed, use the official right-pane toggle or `Ctrl + Alt + B`.
+
+No manual download or extraction is needed first. This URL points to a single-plugin Release asset, not the entire repository.
+
+### Method 2: download first, then install the local file
+
+Download `dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz` from the [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) Assets. **Do not extract it.** For example, after saving it yourself in `D:/DSH-plugins/downloads`, enter this in the same **Package name or address** field:
+
+```text
+file:D:/DSH-plugins/downloads/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
+```
+
+Replace the example with its actual location, including the filename, without quotes. Then follow Method 1's install, enable, full quit and entry-opening steps.
+
+### Method 3: install the single-plugin directory from the repository
+
+Download and extract the repository, locate `plugins/session-panel` and confirm it directly contains `package.json`, `cordis.patch.yml` and `lib`. For a checkout at `D:/DSH-plugins/my-dsh-plugins`, enter this in **Package name or address**:
+
+```text
+D:/DSH-plugins/my-dsh-plugins/plugins/session-panel
+```
+
+The example directory must actually exist; do not paste it without adjusting it. Do not select the repository root or parent `plugins` directory; the root is not an installable Bundle. Retain a directory used for local installation so its source remains available.
+
+### Troubleshooting
+
+- **“Path does not exist or is not a valid plugin package”**: confirm the absolute local path exists. The directory must directly contain the plugin manifest, not a collection of packages. Use the Windows forms above as examples.
+- **GitHub URL installation fails**: download the standalone `.tgz` in your browser and use Method 2. Changing the npm mirror does not provide a GitHub download proxy.
+- **Package name is not found**: this version is not published to npm. `@dsh-local/session-panel` identifies the package; use its standalone asset URL or a local path.
+- **Repository URL or Source code archive entered**: the whole repository, a GitHub `tree/...` page and generated Source code archives are not installation entries for this plugin. Use the Release's standalone `.tgz` or Method 3's single-plugin directory.
+- **Missing entry or resource 404 after installation**: check enabled status and the DSH version, save drafts, wait for tasks to finish, fully quit/reopen and expand the right pane. Do not delete conversations or clear account data.
+
+Install forms follow the [official plugin-manager documentation](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/boot/plugin-manager/README.md) and were checked against the installed `0.2.0-rc.2` spec parser. This does not mean an installation was performed on your behalf in this documentation update.
+
+### Upgrade and uninstall
 
 For upgrades, use the current official plugin-management flow to disable/uninstall the old package and install the new one. Do not delete session logs, clear account settings or disable unrelated plugins. Removing the plugin is not the same as removing DSH-managed history; use official data-management tools and back up first if deletion is intended.
 
