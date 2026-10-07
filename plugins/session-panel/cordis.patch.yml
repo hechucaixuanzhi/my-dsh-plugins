@@ -1,0 +1,3 @@
+- insert:
+    - id: session-panel
+      name: '@dsh-local/session-panel'

@@ -1,0 +1,31 @@
+name: Public plugin checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - name: Public allowlist, redaction and bilingual README gate
+        run: npm run check
+        env:
+          CHECK_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+      - name: Portable offline tests (no account or model requests)
+        run: npm test
+      - name: Inspect standalone package allowlist
+        working-directory: plugins/session-panel
+        run: npm pack --dry-run --json --ignore-scripts

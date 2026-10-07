@@ -1,0 +1,11 @@
+{
+  "name": "my-dsh-plugins",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "check:staged": "node scripts/check.mjs --staged",
+    "test": "node --test"
+  }
+}
