@@ -2,7 +2,7 @@
 
 ## 中文
 
-每个插件是一个独立模块，不在仓库根注册 `dsh.bundle`。当前分别从 `plugins/session-panel` 和 `plugins/wallpaper-bridge` 生成独立发布包。
+每个插件是一个独立模块，不在仓库根注册 `dsh.bundle`。当前分别从 `plugins/session-panel`、`plugins/wallpaper-bridge` 和 `plugins/sillytavern-bridge` 生成独立发布包。
 
 ### 开发环境与检查
 
@@ -36,7 +36,7 @@ CI 的基线来自提交/PR，不运行安装脚本或依赖安装，不读取�
 
 ## English
 
-Each plugin is an independent module; the repository root does not register a `dsh.bundle`. Build separate packages from `plugins/session-panel` and `plugins/wallpaper-bridge`.
+Each plugin is an independent module; the repository root does not register a `dsh.bundle`. Build separate packages from `plugins/session-panel`, `plugins/wallpaper-bridge` and `plugins/sillytavern-bridge`.
 
 ### Development environment and checks
 

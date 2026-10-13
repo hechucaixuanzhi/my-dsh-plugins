@@ -12,12 +12,14 @@
 | --- | --- | --- | --- | --- |
 | [侧边会话 / Session Panel](plugins/session-panel/README.md) | `2.4.0-dsh020rc2.9` | `0.2.0-rc.2` 桌面版 | 独立侧边 Agent；只读查看主对话的消息、执行轨迹和运行状态 | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) |
 | [DSH 壁纸桥 / Wallpaper Bridge](plugins/wallpaper-bridge/README.md) | `0.3.6-dsh020rc2.1`（预发布） | Windows `0.2.0-rc.2` 桌面版 | 对接本机 Wallpaper Engine；壁纸显示、自适应配色和透明度；场景仅静态图 | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/wallpaper-bridge-v0.3.6-dsh020rc2.1) |
+| [DSH 酒馆桥 / Tavern Bridge](plugins/sillytavern-bridge/README.md) | `0.3.0-dsh020rc2.1`（预发布） | Windows `0.2.0-rc.2` 桌面版 | 一键启动预装酒馆；可选 DSH 模型 API 共享与授权工作区配置编辑 | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.0-dsh020rc2.1) |
 
 ## 使用前准备
 
 - 安装兼容版本的 DSH Desktop，具体版本见插件列表。
 - 侧边会话：在 DSH 中完成账号或模型配置，确认普通对话正常；复用已有模型与权限，无需另填密钥，调用按提供方规则计费。
 - 壁纸桥：本机安装 Wallpaper Engine 并应用壁纸，不需要模型配置或模型调用。公开版还需原生安装验收，详见[验证范围](docs/release-checks/wallpaper-bridge.md)。
+- 酒馆桥：**先自行下载、安装 SillyTavern 与 Node.js 24，完成酒馆依赖安装**；目标酒馆版本 1.19.0。插件不包含或自动下载酒馆。模型共享默认关闭，启用后调用可能计费。
 
 ## 快速安装
 
@@ -59,6 +61,20 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/wallpaper-br
 
 本地安装、检测失败、升级与限制见[壁纸桥指南](plugins/wallpaper-bridge/README.md)。不包含 Workshop 素材。
 
+### 安装 DSH 酒馆桥
+
+先安装好酒馆，再在同一「添加插件」输入框粘贴独立安装包链接：
+
+```text
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.0-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+```
+
+确认 `@dsh-local/sillytavern-bridge` 已启用，保存草稿并等待任务结束，完整退出重开。在「设置 → DSH 酒馆桥」填写酒馆绝对目录、Node 和端口，再点右侧「开始 → 酒馆」。
+
+需要共享模型时，明确开启共享，再把设置页给出的 Base URL 和**本地网关密钥**填入酒馆 Custom 连接；无需复制上游密钥。将酒馆目录作为 DSH 工作区后，可授权 DSH 修改指定配置、预设和世界书；修改前备份、校验并刷新页面，不是实时双向同步。详见[完整指南](plugins/sillytavern-bridge/README.md)和[编辑规范](plugins/sillytavern-bridge/WORKSPACE.md)。
+
+公开包不含个人角色、世界书、聊天、密钥、酒馆本体或旧网关配置；原生安装/真实调用仍待验收，因此为预发布版。
+
 ## 使用侧边会话
 
 侧边会话为每个主对话提供独立的聊天历史和草稿，复用官方聊天组件，支持流式回复、图片、附件、`@`、`/`、模型选择和任务停止。
@@ -75,7 +91,7 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/wallpaper-br
 
 ## 升级与兼容性
 
-- 升级前查看所用插件的 [Session Panel CHANGELOG](plugins/session-panel/CHANGELOG.md) 或 [Wallpaper Bridge CHANGELOG](plugins/wallpaper-bridge/CHANGELOG.md) 和兼容版本。
+- 升级前查看所用插件的 CHANGELOG 和兼容版本：[侧边会话](plugins/session-panel/CHANGELOG.md)、[壁纸桥](plugins/wallpaper-bridge/CHANGELOG.md)、[酒馆桥](plugins/sillytavern-bridge/CHANGELOG.md)。
 - 当前 DSH 界面不支持插件自动更新，请停用并卸载旧插件，再安装新版，随后完整退出并重开 DSH。
 - 不需要删除会话历史、清空账号配置或卸载其他插件。
 - 仅声明支持插件列表中的 DSH 版本；升级 DSH 后应先确认插件兼容性。
@@ -86,6 +102,7 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/wallpaper-br
 - 侧边 Agent 读取的主对话内容会进入所选模型的上下文，可能包含私人信息，请留意模型提供方的数据策略。
 - 本仓库不分发账号配置、密钥或聊天历史。侧边会话插件不额外添加遥测或独立云端服务。
 - 壁纸桥不读取聊天或模型密钥，只读取本机 WE 配置/壁纸并保存自己的显示参数与静态图缓存。网页壁纸仍是第三方代码，只使用可信素材；[隔离与网络限制](plugins/wallpaper-bridge/README.md#安全隐私与素材)不等于完整安全沙箱。
+- 酒馆桥模型共享默认关闭；本机网关要求独立随机密钥，并通过 DSH 官方模型服务请求，不解析或分发真实凭据。授权文件编辑依靠 DSH 原有权限，工作区规范不是 OS 沙箱；酒馆聊天内容会按其连接进入所选提供方。
 
 安全问题及脱敏要求见 [SECURITY.md](SECURITY.md)。
 
@@ -93,7 +110,8 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/wallpaper-br
 
 - [侧边会话使用指南](plugins/session-panel/README.md)
 - [壁纸桥使用指南](plugins/wallpaper-bridge/README.md)
-- [侧边会话验证说明](docs/release-checks/session-panel.md) · [壁纸桥验证说明](docs/release-checks/wallpaper-bridge.md)
+- [酒馆桥使用指南](plugins/sillytavern-bridge/README.md)
+- [侧边会话验证说明](docs/release-checks/session-panel.md) · [壁纸桥验证说明](docs/release-checks/wallpaper-bridge.md) · [酒馆桥验证说明](docs/release-checks/sillytavern-bridge.md)
 - [问题反馈与功能建议](https://github.com/hechucaixuanzhi/my-dsh-plugins/issues)
 
 反馈时请提供 DSH 版本、插件版本、复现步骤和脱敏后的截图，不要上传密钥、账号配置或完整会话文件。
@@ -104,4 +122,4 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/wallpaper-br
 
 ## 许可证
 
-本仓库自有代码采用 [MIT License](LICENSE)。各插件保留自己的许可证与来源声明：[侧边会话](plugins/session-panel/NOTICE.md)、[壁纸桥](plugins/wallpaper-bridge/NOTICE.md)。代码许可证不包含壁纸素材授权。
+本仓库自有代码采用 [MIT License](LICENSE)。各插件保留自己的许可证与来源声明：[侧边会话](plugins/session-panel/NOTICE.md)、[壁纸桥](plugins/wallpaper-bridge/NOTICE.md)、[酒馆桥](plugins/sillytavern-bridge/NOTICE.md)。代码许可证不包含壁纸素材授权，也不替代独立 SillyTavern 程序的 AGPL-3.0 许可。

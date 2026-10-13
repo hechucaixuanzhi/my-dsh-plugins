@@ -32,3 +32,10 @@ jobs:
       - name: Inspect Wallpaper Bridge package allowlist
         working-directory: plugins/wallpaper-bridge
         run: npm pack --dry-run --json --ignore-scripts
+      - name: Build and inspect Tavern Bridge actual standalone package
+        run: |
+          mkdir -p dist
+          cd plugins/sillytavern-bridge
+          npm pack --ignore-scripts --pack-destination ../../dist
+          cd ../..
+          node scripts/inspect-package.mjs sillytavern-bridge dist/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz

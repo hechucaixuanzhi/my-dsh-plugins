@@ -12,12 +12,14 @@ This project is not affiliated with DeepSeek. The repository root is not an inst
 | --- | --- | --- | --- | --- |
 | [Session Panel / 侧边会话](plugins/session-panel/README.en.md) | `2.4.0-dsh020rc2.9` | Desktop `0.2.0-rc.2` | Independent side Agent with read-only access to the main conversation's messages, execution trajectory and activity | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) |
 | [DSH Wallpaper Bridge / 壁纸桥](plugins/wallpaper-bridge/README.en.md) | `0.3.6-dsh020rc2.1` (prerelease) | Windows Desktop `0.2.0-rc.2` | Local Wallpaper Engine backgrounds, adaptive colors and transparency; static artwork only for scenes | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/wallpaper-bridge-v0.3.6-dsh020rc2.1) |
+| [DSH Tavern Bridge / 酒馆桥](plugins/sillytavern-bridge/README.en.md) | `0.3.0-dsh020rc2.1` (prerelease) | Windows Desktop `0.2.0-rc.2` | Launch preinstalled Tavern; optional DSH model API sharing and authorized workspace configuration editing | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.0-dsh020rc2.1) |
 
 ## Prerequisites
 
 - Install a compatible DSH Desktop version listed above.
 - Session Panel: configure an account/model in DSH and confirm ordinary conversations work. It reuses existing models/permissions without another key; calls follow the provider's billing rules.
 - Wallpaper Bridge: install Wallpaper Engine locally and apply a wallpaper. No model configuration or calls are needed. Native installation acceptance of the public copy is pending; see [validation scope](docs/release-checks/wallpaper-bridge.md).
+- Tavern Bridge: **download/install SillyTavern and Node.js 24 first, including Tavern's dependencies**; target Tavern version 1.19.0. The plugin neither bundles nor downloads Tavern. Model sharing is off by default; enabled calls may incur charges.
 
 ## Quick start
 
@@ -45,7 +47,7 @@ file:D:/DSH-plugins/downloads/dsh-local-session-panel-2.4.0-dsh020rc2.9.tgz
 
 Replace the example with the file's actual location, without quotes. Installing a single-plugin directory from a checkout is also supported; see the [complete installation and troubleshooting guide](plugins/session-panel/README.en.md#install-upgrade-and-uninstall).
 
-Neither current plugin is published to npm, so package names alone are not installation sources. The whole repository URL, its root directory and GitHub's generated Source code archives are not standalone plugin installation entries.
+Current plugins are not published to npm, so package names alone are not installation sources. The whole repository URL, its root directory and GitHub's generated Source code archives are not standalone plugin installation entries.
 
 ### Install DSH Wallpaper Bridge
 
@@ -58,6 +60,20 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/wallpaper-br
 Confirm `@dsh-local/we-skin` is enabled, save drafts, wait for tasks to finish and fully quit/reopen DSH. Open **Settings → DSH 壁纸桥**. The public name changes; the internal package name and configuration locations are retained. Images, browser-decodable video and limited web wallpapers are supported. **Scenes use extracted static artwork or previews, not dynamic scene effects.**
 
 See the [Wallpaper Bridge guide](plugins/wallpaper-bridge/README.en.md) for local installation, discovery failures, upgrades and limitations. No Workshop assets are bundled.
+
+### Install DSH Tavern Bridge
+
+Install Tavern first, then paste this separate package URL into the same **Add plugin** input:
+
+```text
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.0-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+```
+
+Confirm `@dsh-local/sillytavern-bridge` is enabled, save drafts, wait for tasks and fully quit/reopen. Set Tavern's absolute directory, Node and ports under **Settings → DSH 酒馆桥**, then choose **Start → 酒馆** in the right pane.
+
+For sharing, explicitly enable it and enter the settings page's Base URL and **local gateway key** in Tavern's Custom connection; do not copy provider keys. Add Tavern as a DSH workspace to authorize edits of specified configuration, presets/world books. Back up, validate and reload the page; this is not live bidirectional synchronization. See the [complete guide](plugins/sillytavern-bridge/README.en.md) and [editing rules](plugins/sillytavern-bridge/WORKSPACE.en.md).
+
+No personal characters, world books, chats, secrets, Tavern application or legacy gateway configuration are packaged. Native installation/live-call acceptance is pending, so this is a prerelease.
 
 ## Using Session Panel
 
@@ -75,7 +91,7 @@ See the [Session Panel documentation](plugins/session-panel/README.en.md) for ca
 
 ## Upgrades and compatibility
 
-- Before upgrading, check the relevant [Session Panel CHANGELOG](plugins/session-panel/CHANGELOG.md) or [Wallpaper Bridge CHANGELOG](plugins/wallpaper-bridge/CHANGELOG.md) and compatible DSH version.
+- Before upgrading, check the relevant changelog and compatible DSH version: [Session Panel](plugins/session-panel/CHANGELOG.md), [Wallpaper Bridge](plugins/wallpaper-bridge/CHANGELOG.md), [Tavern Bridge](plugins/sillytavern-bridge/CHANGELOG.md).
 - The current DSH UI does not automatically update plugins. Disable and uninstall the old plugin, install the new version, then fully quit and reopen DSH.
 - Do not delete conversation history, clear account configuration or remove unrelated plugins.
 - Support is limited to the DSH version listed above. Confirm plugin compatibility before upgrading DSH.
@@ -86,6 +102,7 @@ See the [Session Panel documentation](plugins/session-panel/README.en.md) for ca
 - Main-conversation records read by the side Agent enter the selected model's context and may contain private information. Review your model provider's data policies.
 - This repository does not distribute account configuration, keys or chat history. Session Panel adds no telemetry or separate cloud backend.
 - Wallpaper Bridge reads no chats or model keys. It reads local WE settings/artwork and saves its own display settings/static-image cache. Web wallpapers remain third-party code; use trusted assets. [Isolation and network limits](plugins/wallpaper-bridge/README.en.md#security-privacy-and-artwork) are not a complete security sandbox.
+- Tavern Bridge sharing is off by default; its loopback gateway requires an independent random key and calls DSH's official model service, without parsing/distributing real credentials. Workspace editing uses existing DSH permissions; instructions are not an OS sandbox. Tavern chat content reaches the selected provider through its configured connection.
 
 See [SECURITY.md](SECURITY.md) for security reporting and redaction guidance.
 
@@ -93,7 +110,8 @@ See [SECURITY.md](SECURITY.md) for security reporting and redaction guidance.
 
 - [Session Panel user guide](plugins/session-panel/README.en.md)
 - [Wallpaper Bridge user guide](plugins/wallpaper-bridge/README.en.md)
-- [Session Panel validation](docs/release-checks/session-panel.md) · [Wallpaper Bridge validation](docs/release-checks/wallpaper-bridge.md)
+- [Tavern Bridge user guide](plugins/sillytavern-bridge/README.en.md)
+- [Session Panel validation](docs/release-checks/session-panel.md) · [Wallpaper Bridge validation](docs/release-checks/wallpaper-bridge.md) · [Tavern Bridge validation](docs/release-checks/sillytavern-bridge.md)
 - [Bug reports and feature requests](https://github.com/hechucaixuanzhi/my-dsh-plugins/issues)
 
 Include the DSH version, plugin version, reproduction steps and redacted screenshots in reports. Do not upload keys, account configuration or complete session files.
@@ -104,4 +122,4 @@ Issues, documentation improvements and plugin adaptations are welcome. See [CONT
 
 ## License
 
-Original repository code is licensed under the [MIT License](LICENSE). Plugins retain their own licenses and attribution: [Session Panel](plugins/session-panel/NOTICE.md), [Wallpaper Bridge](plugins/wallpaper-bridge/NOTICE.md). Code licensing does not grant artwork rights.
+Original repository code is licensed under the [MIT License](LICENSE). Plugins retain their own licenses and attribution: [Session Panel](plugins/session-panel/NOTICE.md), [Wallpaper Bridge](plugins/wallpaper-bridge/NOTICE.md), [Tavern Bridge](plugins/sillytavern-bridge/NOTICE.md). Code licensing grants no artwork rights and does not replace the separately installed SillyTavern application's AGPL-3.0 license.

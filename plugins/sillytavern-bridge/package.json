@@ -1,0 +1,23 @@
+{
+  "name": "@dsh-local/sillytavern-bridge",
+  "version": "0.3.0-dsh020rc2.1",
+  "description": "DSH Tavern Bridge | DSH 酒馆桥 — launch a preinstalled SillyTavern, share DSH models through a protected local gateway, and use authorized workspace editing.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": { ".": "./lib/index.js", "./client": "./lib/client.js", "./package.json": "./package.json" },
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "inject": ["@deepseek-ai/dsh-client-ui-sidebar-right", "@deepseek-ai/dsh-client-ui-sidebar-browser", "@deepseek-ai/dsh-client-ui-slots"]
+    }
+  },
+  "peerDependencies": { "@deepseek-ai/dsh": "0.2.0-rc.2" },
+  "peerDependenciesMeta": { "@deepseek-ai/dsh": { "optional": true } },
+  "engines": { "node": ">=24" },
+  "files": ["lib/index.js", "lib/client.js", "lib/config.js", "lib/launcher.js", "lib/gateway.js", "cordis.patch.yml", "README.md", "README.en.md", "WORKSPACE.md", "WORKSPACE.en.md", "CHANGELOG.md", "LICENSE", "NOTICE.md"],
+  "repository": { "type": "git", "url": "https://github.com/hechucaixuanzhi/my-dsh-plugins.git", "directory": "plugins/sillytavern-bridge" },
+  "homepage": "https://github.com/hechucaixuanzhi/my-dsh-plugins/tree/main/plugins/sillytavern-bridge",
+  "bugs": { "url": "https://github.com/hechucaixuanzhi/my-dsh-plugins/issues" },
+  "license": "MIT"
+}

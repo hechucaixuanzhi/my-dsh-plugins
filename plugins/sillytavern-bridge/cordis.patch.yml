@@ -1,0 +1,3 @@
+- insert:
+    - id: sillytavern-bridge
+      name: '@dsh-local/sillytavern-bridge'

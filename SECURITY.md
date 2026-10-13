@@ -10,6 +10,8 @@
 
 发现疑似漏洞时，不要先公开凭据或可利用的私人数据。优先使用 GitHub 仓库的私密漏洞报告功能（若可用）；否则先仅说明存在安全问题，请维护者提供私密沟通方式。真实网络断线或升级异常请保留历史，不清空配置来规避。
 
+酒馆桥的可选网关是另一条本机模型访问边界：共享默认关闭、只监听回环、要求独立随机密钥，限制 Host/Origin、请求大小与并发。不要将其转发到手机/互联网或上传 gateway-auth.json。它通过 DSH 官方 llm 服务调用，不解析凭据文件；启用后共享范围内的 DSH 模型可被持钥本机客户端调用并计费。文件编辑规范只是用户可审阅的说明，不自动提升或限制 OS 权限。原生验收未完成的版本必须明确标为预发布。
+
 ## English
 
 This community plugin targets trusted local users, not multi-user authorization or OS sandboxing. Official Connection services provide request authentication and origin restrictions; the plugin uses its own exact routes and bound-session checks without bypassing authentication.
@@ -19,3 +21,5 @@ Read-only main observation does not remove the side Agent's tool/file permission
 Do not include accounts, keys, cookies, personal paths, real sessions, workspace data, test startup records or authentication material in this repository or releases. Scanning detects common patterns, not all secrets. Manually redact screenshots, paths, text and attachments before posting Issues; never upload entire configuration directories.
 
 For suspected vulnerabilities, do not publicly post credentials or exploitable private data. Prefer GitHub's private vulnerability reporting when available; otherwise ask the maintainer for a private contact without publishing sensitive details. Preserve history when investigating network or upgrade problems instead of clearing configuration to mask the failure.
+
+Tavern Bridge's optional gateway is a separate local model-access boundary: opt-in, loopback-only, independent random key, Host/Origin checks and request/concurrency limits. Never forward it to phones/the internet or upload gateway-auth.json. It calls DSH's official llm service without parsing credential files; authorized local key holders can invoke shared models and incur charges. Workspace rules are reviewable instructions, not automatic elevation or OS enforcement. Releases lacking native acceptance must be marked prerelease.

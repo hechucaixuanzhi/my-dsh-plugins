@@ -27,7 +27,7 @@ const rootFiles = new Set(['README.md', 'README.en.md', 'AGENTS.md', 'CONTRIBUTI
 export function allowedPublicPath(path) {
   if (rootFiles.has(path)) return true;
   if (/(?:^|\/)(?:node_modules|dist|testing|backups|logs|sessions|credentials|profiles|\.dsh|\.codex)(?:\/|$)/i.test(path)) return false;
-  return /^plugins\/[a-z0-9-]+\/(?:package\.json|cordis\.patch\.yml|README(?:\.en)?\.md|CHANGELOG\.md|LICENSE|NOTICE\.md|lib\/[A-Za-z0-9_.-]+\.(?:js|d\.ts))$/.test(path)
+  return /^plugins\/[a-z0-9-]+\/(?:package\.json|cordis\.patch\.yml|README(?:\.en)?\.md|WORKSPACE(?:\.en)?\.md|CHANGELOG\.md|LICENSE|NOTICE\.md|lib\/[A-Za-z0-9_.-]+\.(?:js|d\.ts))$/.test(path)
     || /^tests\/(?:[a-z0-9-]+\/)?[A-Za-z0-9_.-]+\.mjs$/.test(path)
     || /^scripts\/[A-Za-z0-9_.-]+\.mjs$/.test(path)
     || /^docs\/release-checks\/[a-z0-9-]+\.md$/.test(path)

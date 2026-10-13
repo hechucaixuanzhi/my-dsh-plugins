@@ -33,3 +33,7 @@ test('metadata and runtime updates bump versions; documentation-only edits do no
   for (const suffix of ['lib/client.js', 'lib/index.js', 'cordis.patch.yml', 'package.json']) assert.equal(needsVersionBump('example', ['plugins/example/' + suffix]), true);
   assert.equal(needsVersionBump('example', ['plugins/example/README.md']), false);
 });
+test('reviewable bilingual workspace templates are allowed, never private runtime configuration', () => {
+  for (const name of ['plugins/sillytavern-bridge/WORKSPACE.md', 'plugins/sillytavern-bridge/WORKSPACE.en.md']) assert.equal(allowedPublicPath(name), true);
+  for (const name of ['plugins/sillytavern-bridge/providers.json', 'plugins/sillytavern-bridge/gateway-auth.json', 'plugins/sillytavern-bridge/config.json', 'plugins/sillytavern-bridge/data/settings.json']) assert.equal(allowedPublicPath(name), false);
+});
