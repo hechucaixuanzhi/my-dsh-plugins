@@ -1,6 +1,16 @@
 # Tavern Bridge release checks / 酒馆桥发布检查
 
-## 0.3.0-dsh020rc2.1 — 2026-10-13
+## 0.3.1-dsh020rc2.1 — 2026-10-14
+
+- New behavior / 新行为：sharing consent includes installation of the local Tavern helper and current-user connection updates through Tavern's native APIs. Startup issues an expiring single-use handoff; the helper saves endpoint/key/model/auto-connect and connects without a manual Connect click. / 共享授权包含本机扩展安装及当前用户连接更新，启动后自动配置并连接。
+- Recovery / 恢复：prior connection fields and Custom secret ID are saved locally before changes; old native secrets remain. Extension code updates retain `.bak` files, reject unknown/local edits and check for concurrent changes. / 保留旧连接与旧密钥，扩展更新备份并检查改动。
+- Security / 安全：handoff requires Tavern Origin, expires after two minutes and is consumed before async work; its token cannot access model endpoints. Persistent gateway keys are absent from URL/source/state. / 限定来源、时效和一次性，不在公开产物中保存真实密钥。
+- New synthetic coverage / 新增合成验证：token expiry/replay/origin, empty catalog, native save failure, key deduplication, model fallback, extension integrity/symlink refusal, reused startup and version mismatch.
+- Real Tavern browser / 真实酒馆浏览器：disposable SillyTavern 1.19.0 with a fake DSH model service and real headless browser verified first-open, same-document reopening and ordinary reload without a Connect click, persisted auto-connect/endpoint/key, previous connection snapshot, and no duplicate gateway key. Only Tavern's own first-run welcome dialog was acknowledged. No real user data or model generation requests. / 独立临时副本与合成模型验证，未操作真实用户数据或付费模型。
+- Final regression / 最终回归：**108 passed, 0 failed, 0 skipped**, with installed DSH method contracts and the optional real Tavern browser test enabled. Portable default run: **86 passed, 3 optional suites/tests skipped** (not counted as passes). / 含已安装方法及真实酒馆浏览器验证 108 项通过；默认便携模式明确保留跳过项。
+- Scope / 范围：auto-connect requires enabled Tavern extensions and version 1.19.0. Native DSH Desktop installation/rendering and paid model generation remain **NOT RUN**; this remains a prerelease. / 原生 DSH 安装及真实付费生成仍未运行，保持预发布。
+
+## Historical evidence: 0.3.0-dsh020rc2.1 — 2026-10-13
 
 Target / 适配目标: Windows DSH Desktop `0.2.0-rc.2`, separately preinstalled SillyTavern `1.19.0`.
 

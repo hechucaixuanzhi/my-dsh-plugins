@@ -12,9 +12,13 @@
 
 酒馆桥的可选网关是另一条本机模型访问边界：共享默认关闭、只监听回环、要求独立随机密钥，限制 Host/Origin、请求大小与并发。不要将其转发到手机/互联网或上传 gateway-auth.json。它通过 DSH 官方 llm 服务调用，不解析凭据文件；启用后共享范围内的 DSH 模型可被持钥本机客户端调用并计费。文件编辑规范只是用户可审阅的说明，不自动提升或限制 OS 权限。原生验收未完成的版本必须明确标为预发布。
 
+酒馆自动连接额外使用仅限酒馆 Origin 的两分钟一次性交接令牌；长期网关密钥通过交接响应进入当前登录用户的酒馆密钥库，不进入 URL、扩展源文件或普通状态。令牌只存在于短暂 URL fragment，页面加载后立即清除。启用共享明确授权扩展安装及当前用户连接更新。旧连接字段与旧密钥只保留在本机；用户仍需避免多个页面竞争修改设置。
+
 ## English
 
 This community plugin targets trusted local users, not multi-user authorization or OS sandboxing. Official Connection services provide request authentication and origin restrictions; the plugin uses its own exact routes and bound-session checks without bypassing authentication.
+
+Tavern auto-connect uses a single-use, two-minute handoff restricted to the Tavern Origin. The persistent gateway key enters the signed-in user's native secret store through this response, never URLs, helper source or ordinary state. Only the short-lived token uses a promptly removed URL fragment. Sharing consent covers helper installation and connection updates. Prior fields/keys remain local; users should avoid competing settings edits across tabs.
 
 Read-only main observation does not remove the side Agent's tool/file permissions. Main records may contain private data and enter the selected model's context; general tools remain governed by DSH permissions. Tool-name conflict rules are not complete side-effect analysis or prompt-injection protection.
 

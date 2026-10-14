@@ -12,14 +12,14 @@
 | --- | --- | --- | --- | --- |
 | [侧边会话 / Session Panel](plugins/session-panel/README.md) | `2.4.0-dsh020rc2.9` | `0.2.0-rc.2` 桌面版 | 独立侧边 Agent；只读查看主对话的消息、执行轨迹和运行状态 | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) |
 | [DSH 壁纸桥 / Wallpaper Bridge](plugins/wallpaper-bridge/README.md) | `0.3.6-dsh020rc2.1`（预发布） | Windows `0.2.0-rc.2` 桌面版 | 对接本机 Wallpaper Engine；壁纸显示、自适应配色和透明度；场景仅静态图 | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/wallpaper-bridge-v0.3.6-dsh020rc2.1) |
-| [DSH 酒馆桥 / Tavern Bridge](plugins/sillytavern-bridge/README.md) | `0.3.0-dsh020rc2.1`（预发布） | Windows `0.2.0-rc.2` 桌面版 | 一键启动预装酒馆；可选 DSH 模型 API 共享与授权工作区配置编辑 | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.0-dsh020rc2.1) |
+| [DSH 酒馆桥 / Tavern Bridge](plugins/sillytavern-bridge/README.md) | `0.3.1-dsh020rc2.1`（预发布） | Windows `0.2.0-rc.2` 桌面版 | 一键启动预装酒馆；可选 DSH 模型 API 共享与授权工作区配置编辑 | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.1-dsh020rc2.1) |
 
 ## 使用前准备
 
 - 安装兼容版本的 DSH Desktop，具体版本见插件列表。
 - 侧边会话：在 DSH 中完成账号或模型配置，确认普通对话正常；复用已有模型与权限，无需另填密钥，调用按提供方规则计费。
 - 壁纸桥：本机安装 Wallpaper Engine 并应用壁纸，不需要模型配置或模型调用。公开版还需原生安装验收，详见[验证范围](docs/release-checks/wallpaper-bridge.md)。
-- 酒馆桥：**先自行下载、安装 SillyTavern 与 Node.js 24，完成酒馆依赖安装**；目标酒馆版本 1.19.0。插件不包含或自动下载酒馆。模型共享默认关闭，启用后调用可能计费。
+- 酒馆桥：**先自行下载、安装 SillyTavern 与 Node.js 24，完成酒馆依赖安装**；目标酒馆版本 1.19.0。插件不包含或自动下载酒馆。模型共享默认关闭，启用后安装本机酒馆扩展并自动连接 DSH API，无需手动 Connect；保留旧连接快照，模型生成可能计费。需要酒馆扩展启用。
 
 ## 快速安装
 
@@ -66,7 +66,7 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/wallpaper-br
 先安装好酒馆，再在同一「添加插件」输入框粘贴独立安装包链接：
 
 ```text
-https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.0-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.1-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.1-dsh020rc2.1.tgz
 ```
 
 确认 `@dsh-local/sillytavern-bridge` 已启用，保存草稿并等待任务结束，完整退出重开。在「设置 → DSH 酒馆桥」填写酒馆绝对目录、Node 和端口，再点右侧「开始 → 酒馆」。

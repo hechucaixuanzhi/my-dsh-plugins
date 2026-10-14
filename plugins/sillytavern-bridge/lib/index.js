@@ -2,12 +2,13 @@ import { promises as fs } from 'node:fs';
 import { ConfigStore, VERSION, normalizeConfig, localUrl } from './config.js';
 import { createTavernLauncher, inspectInstallation } from './launcher.js';
 import { createGateway, BridgeError } from './gateway.js';
+import { installTavernExtension } from './extension-installer.js';
 
 export const name = '@dsh-local/sillytavern-bridge';
 export const inject = ['connection', 'llm'];
 const PREFIX = '/api/sillytavern-bridge';
 
-export function createRuntime({ llm, store = new ConfigStore(), launcher = createTavernLauncher(), gatewayFactory = createGateway, inspect = inspectInstallation } = {}) {
+export function createRuntime({ llm, store = new ConfigStore(), launcher = createTavernLauncher(), gatewayFactory = createGateway, inspect = inspectInstallation, installExtension = installTavernExtension } = {}) {
   let gateway, pending, disposed = false, saving = false;
   const check = () => { if (disposed) throw new BridgeError(503, '插件已停用 / Plugin stopped'); };
   return {
@@ -31,7 +32,11 @@ export function createRuntime({ llm, store = new ConfigStore(), launcher = creat
       check(); if (saving) return Promise.reject(new BridgeError(409, '配置正在保存 / Configuration is being saved'));
       if (!pending) pending = (async () => {
         const config = await store.load(); check();
-        await inspect(config.tavernDirectory); check();
+        const installation = await inspect(config.tavernDirectory); check();
+        if (config.sharingEnabled) {
+          if (installation.version !== '1.19.0') throw new BridgeError(409, '自动连接仅验证 SillyTavern 1.19.0 / Auto-connect requires SillyTavern 1.19.0');
+          await installExtension(config.tavernDirectory); check();
+        }
         const result = await launcher.ensureStarted(config); check();
         if (config.sharingEnabled && !gateway) {
           const key = await store.gatewayKey(); check();
@@ -40,7 +45,10 @@ export function createRuntime({ llm, store = new ConfigStore(), launcher = creat
           try { await candidate.start(); if (disposed) { await candidate.close(); throw new BridgeError(503, 'Plugin stopped during startup'); } }
           catch (error) { await candidate.close(); if (gateway === candidate) gateway = undefined; throw error; }
         }
-        check(); return { ...result, gatewayRunning: !!gateway };
+        check();
+        const url = new URL(result.url);
+        if (gateway) url.hash = `dsh-bridge=${config.gatewayPort}.${gateway.issueHandoff()}`;
+        return { ...result, url: url.href, gatewayRunning: !!gateway };
       })().finally(() => { pending = undefined; });
       return pending;
     },

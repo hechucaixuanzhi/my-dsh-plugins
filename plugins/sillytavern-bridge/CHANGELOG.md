@@ -1,5 +1,16 @@
 # Changelog / 更新记录
 
+## 0.3.1-dsh020rc2.1 — 2026-10-14 (prerelease / 预发布)
+
+- 开启共享后安装轻量酒馆扩展，通过当前登录用户的原生接口保存并自动连接 DSH API，无需手动 Connect。
+- 保留旧连接字段和旧密钥，验证保存结果；保留有效模型或选择首个共享模型，清除旧 Custom 请求覆盖。
+- 两分钟有效、一次性交接限定酒馆 Origin；长期密钥不进入 URL 或源文件。扩展更新备份并拒绝覆盖本地改动。
+- 自动连接限定 SillyTavern 1.19.0 和启用的扩展；共享关闭时不安装或交接。原生 DSH 验收另行记录。
+- With sharing enabled, install a lightweight Tavern helper and save/connect the signed-in user's DSH API through native APIs, without manual Connect.
+- Preserve old connection fields/keys and verify persistence; keep a valid shared model or select the first, clearing old Custom request overrides.
+- Origin-restricted, single-use handoffs expire after two minutes; no persistent keys in URLs/source. Back up helper updates and refuse local edits.
+- Auto-connect requires SillyTavern 1.19.0 and enabled extensions; disabled sharing performs no install/handoff. Native DSH acceptance remains separate.
+
 ## 0.3.0-dsh020rc2.1 — 2026-10-13 (prerelease / 预发布)
 
 ### 中文

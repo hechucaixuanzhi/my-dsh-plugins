@@ -38,4 +38,4 @@ jobs:
           cd plugins/sillytavern-bridge
           npm pack --ignore-scripts --pack-destination ../../dist
           cd ../..
-          node scripts/inspect-package.mjs sillytavern-bridge dist/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+          node scripts/inspect-package.mjs sillytavern-bridge dist/dsh-local-sillytavern-bridge-0.3.1-dsh020rc2.1.tgz

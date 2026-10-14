@@ -8,7 +8,7 @@
 
 ## 版本与前提
 
-- 插件 `0.3.0-dsh020rc2.1`，首个公开预发布版；内部包名保留为 `@dsh-local/sillytavern-bridge`。
+- 插件 `0.3.1-dsh020rc2.1`，首个公开预发布版；内部包名保留为 `@dsh-local/sillytavern-bridge`。
 - 适配目标：Windows DSH Desktop **`0.2.0-rc.2`**，本机 SillyTavern **`1.19.0`**。其他版本未验证；本次不自动升级 DSH 或酒馆。
 - **必须先自行下载并安装 SillyTavern、Node.js 24，并完成酒馆依赖安装。** 酒馆目录应包含 `server.js`、`package.json`、`node_modules/`。参考[酒馆官方 Windows 安装指南](https://docs.sillytavern.app/installation/windows/)，从[官方 Release](https://github.com/SillyTavern/SillyTavern/releases)取得适合的版本。
 - DSH 的右侧 Browser 插件需启用。先确认普通 DSH 对话和独立酒馆都能正常使用。
@@ -30,7 +30,7 @@
 2. 把下面完整链接粘贴到「包名或地址」输入框，**不是“安装源 / 自定义地址”**：
 
 ```text
-https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.0-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.1-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.1-dsh020rc2.1.tgz
 ```
 
 3. 安装源可保持默认；它用于 npm 依赖下载，不是 GitHub 链接输入框。
@@ -40,10 +40,10 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-
 
 ### 本地安装或源码目录
 
-可先从 [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.0-dsh020rc2.1) 下载独立 `.tgz`，无需解压；在同一输入框填写文件的实际绝对路径，例如：
+可先从 [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.1-dsh020rc2.1) 下载独立 `.tgz`，无需解压；在同一输入框填写文件的实际绝对路径，例如：
 
 ```text
-file:D:/DSH-plugins/downloads/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+file:D:/DSH-plugins/downloads/dsh-local-sillytavern-bridge-0.3.1-dsh020rc2.1.tgz
 ```
 
 也可填写已下载仓库中的单插件目录，例如 `D:/my-dsh-plugins/plugins/sillytavern-bridge`。整个仓库地址、仓库根目录、`plugins` 父目录和 GitHub Source code 压缩包都不是本插件的独立安装入口。未发布到 npm，不能仅填包名下载。
@@ -51,13 +51,17 @@ file:D:/DSH-plugins/downloads/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
 ## 共享 DSH 模型 API
 
 1. 在 DSH 中配置并验证需要的模型。只在你信任的本机启用共享，模型调用按所选提供方计费。
-2. 在插件设置中勾选「明确授权共享 DSH 模型」。可填写提供方白名单，逗号分隔；留空会共享 DSH 当前所有已注册提供方的可列出模型。若只想开放某家，请明确填写它在 DSH 中的提供方 ID。
+2. 在插件设置中勾选「启用 DSH 模型共享并自动连接酒馆」。这同时授权安装本机酒馆扩展、备份并更新当前登录用户的连接设置。可填写提供方白名单；留空共享所有已注册提供方的可列出模型。
 3. 保存，再点击右栏酒馆入口。网关随入口启动，**默认端口 8100，仅监听本机回环地址**；可改成其他 1024–65535 端口，但不能与酒馆端口相同。
-4. 在插件设置中取得自动生成的 **Base URL** 和「本地网关密钥」。这是独立随机访问密钥，**不是上游 API Key**；只在明确点击显示时返回，不出现在普通状态响应中。
-5. 酒馆的 API 连接类型选择 **Chat Completion → Custom (OpenAI-compatible)**，填入上述 Base URL 和本地网关密钥，再点 Connect 刷新模型列表。模型 ID 为 `提供方/模型`。
-6. 此后在 DSH 修改已注册的模型配置，酒馆重新 Connect 后获取当前目录；密钥与端点仍由 DSH 管理。模型能列出不等于提供方认证、额度或账号政策一定允许调用。
+4. 插件安装轻量 **DSH Tavern Bridge** 酒馆扩展。页面就绪后，通过酒馆原生设置/密钥接口保存当前用户的 Custom API 地址、本地网关密钥、共享模型和“自动连接上次服务器”，然后自动连接，**无需填写密钥或点击 Connect**。不会发送生成请求。
+5. 已选模型仍在共享列表中时保留，否则选择首个模型。清空旧 Custom 额外请求头、请求体覆盖和字段排除，防止旧提供方配置干扰。模型 ID 为 `提供方/模型`。
+6. 从 DSH 入口重新打开会获取当前模型目录；普通刷新使用酒馆内置自动连接。DSH 和网关必须保持运行，模型能列出不等于上游认证或额度允许生成。
 
-首次连接信息需要用户手动填写或另行授权 DSH 修改相关字段。插件**不会静默覆盖**酒馆连接配置，也不会把真实上游密钥复制进去。
+酒馆必须启用扩展系统且未停用 DSH Tavern Bridge，安装目录需要可写。自动连接仅支持 **SillyTavern 1.19.0**，其他版本明确报错。多用户登录时先正常登录，再从 DSH 重新打开；不会绕过登录。请关闭其他正在编辑连接设置的页面，防止竞争保存。
+
+首次连接在当前用户的 `extension_settings.dsh_tavern_bridge.previousConnection` 保留原连接字段、自动连接开关和旧 Custom 密钥 ID；旧密钥仍保留在酒馆密钥库。恢复时关闭共享，按快照恢复字段和开关，并在酒馆密钥管理中选择旧密钥。停用共享不会自动覆盖用户后续修改；没有新交接令牌时扩展不会改写连接。请勿上传配置或密钥库。
+
+交接使用两分钟有效、一次性令牌，放在 URL fragment 中并立即移除。长期网关密钥不进入 URL、扩展源文件或普通状态响应。扩展更新保留本机 `.bak` 副本并校验旧代码；同名未知扩展或本地改动会阻止覆盖。设置中的手动密钥入口保留用于排障。
 
 ### 兼容范围
 

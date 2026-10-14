@@ -3,7 +3,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { randomBytes } from 'node:crypto';
 
-export const VERSION = '0.3.0-dsh020rc2.1';
+export const VERSION = '0.3.1-dsh020rc2.1';
 export const DEFAULTS = Object.freeze({ tavernDirectory: '', nodeCommand: 'node', tavernPort: 8000, gatewayPort: 8100, sharingEnabled: false, sharedProviders: [] });
 export const storageDirectory = () => path.join(process.env.DSH_HOME || path.join(os.homedir(), '.dsh'), 'storages', 'sillytavern-bridge');
 export function localUrl(port, suffix = '/') { return `http://${'127.0.0.1'}:${port}${suffix}`; }

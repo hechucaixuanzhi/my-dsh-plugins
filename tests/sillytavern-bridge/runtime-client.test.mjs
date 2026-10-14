@@ -10,8 +10,8 @@ function runtimeFixture(extra = {}) {
   let config = normalizeConfig(), reads = 0, launches = 0, started = 0, closed = 0, modelRequests = 0;
   const key = randomBytes(32).toString('hex');
   const store = { load: async () => config, save: async value => { config = value; }, gatewayKey: async () => { reads++; return key; } };
-  const runtime = createRuntime({ llm: {}, store, inspect: async () => ({}), launcher: { ensureStarted: async () => { launches++; return { status: 'ready', url: localUrl(8000) }; } },
-    gatewayFactory: () => ({ get activeRequests() { return modelRequests; }, start: async () => { started++; }, close: async () => { closed++; } }), ...extra });
+  const runtime = createRuntime({ llm: {}, store, inspect: async () => ({ version: '1.19.0' }), installExtension: async () => {}, launcher: { ensureStarted: async () => { launches++; return { status: 'ready', url: localUrl(8000) }; } },
+    gatewayFactory: () => ({ get activeRequests() { return modelRequests; }, issueHandoff: () => 'synthetic-handoff', start: async () => { started++; }, close: async () => { closed++; } }), ...extra });
   return { runtime, key, set config(v) { config = normalizeConfig(v); }, set modelRequests(v) { modelRequests = v; }, get counts() { return { reads, launches, started, closed }; } };
 }
 

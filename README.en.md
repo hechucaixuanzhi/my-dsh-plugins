@@ -12,14 +12,14 @@ This project is not affiliated with DeepSeek. The repository root is not an inst
 | --- | --- | --- | --- | --- |
 | [Session Panel / 侧边会话](plugins/session-panel/README.en.md) | `2.4.0-dsh020rc2.9` | Desktop `0.2.0-rc.2` | Independent side Agent with read-only access to the main conversation's messages, execution trajectory and activity | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/session-panel-v2.4.0-dsh020rc2.9) |
 | [DSH Wallpaper Bridge / 壁纸桥](plugins/wallpaper-bridge/README.en.md) | `0.3.6-dsh020rc2.1` (prerelease) | Windows Desktop `0.2.0-rc.2` | Local Wallpaper Engine backgrounds, adaptive colors and transparency; static artwork only for scenes | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/wallpaper-bridge-v0.3.6-dsh020rc2.1) |
-| [DSH Tavern Bridge / 酒馆桥](plugins/sillytavern-bridge/README.en.md) | `0.3.0-dsh020rc2.1` (prerelease) | Windows Desktop `0.2.0-rc.2` | Launch preinstalled Tavern; optional DSH model API sharing and authorized workspace configuration editing | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.0-dsh020rc2.1) |
+| [DSH Tavern Bridge / 酒馆桥](plugins/sillytavern-bridge/README.en.md) | `0.3.1-dsh020rc2.1` (prerelease) | Windows Desktop `0.2.0-rc.2` | Launch preinstalled Tavern; optional DSH model API sharing and authorized workspace configuration editing | [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.1-dsh020rc2.1) |
 
 ## Prerequisites
 
 - Install a compatible DSH Desktop version listed above.
 - Session Panel: configure an account/model in DSH and confirm ordinary conversations work. It reuses existing models/permissions without another key; calls follow the provider's billing rules.
 - Wallpaper Bridge: install Wallpaper Engine locally and apply a wallpaper. No model configuration or calls are needed. Native installation acceptance of the public copy is pending; see [validation scope](docs/release-checks/wallpaper-bridge.md).
-- Tavern Bridge: **download/install SillyTavern and Node.js 24 first, including Tavern's dependencies**; target Tavern version 1.19.0. The plugin neither bundles nor downloads Tavern. Model sharing is off by default; enabled calls may incur charges.
+- Tavern Bridge: **download/install SillyTavern and Node.js 24 first, including Tavern's dependencies**; target Tavern version 1.19.0. The plugin neither bundles nor downloads Tavern. Sharing is off by default; enabling installs a local Tavern helper and auto-connects to the DSH API without manual Connect, retaining prior connection fields. Requires enabled extensions; model generation may incur charges.
 
 ## Quick start
 
@@ -66,7 +66,7 @@ See the [Wallpaper Bridge guide](plugins/wallpaper-bridge/README.en.md) for loca
 Install Tavern first, then paste this separate package URL into the same **Add plugin** input:
 
 ```text
-https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.0-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.1-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.1-dsh020rc2.1.tgz
 ```
 
 Confirm `@dsh-local/sillytavern-bridge` is enabled, save drafts, wait for tasks and fully quit/reopen. Set Tavern's absolute directory, Node and ports under **Settings → DSH 酒馆桥**, then choose **Start → 酒馆** in the right pane.

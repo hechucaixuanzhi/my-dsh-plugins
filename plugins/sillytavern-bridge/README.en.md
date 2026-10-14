@@ -8,7 +8,7 @@ An independent community integration, not an official DeepSeek or SillyTavern pr
 
 ## Version and prerequisites
 
-- Plugin `0.3.0-dsh020rc2.1`, first public prerelease; internal name remains `@dsh-local/sillytavern-bridge`.
+- Plugin `0.3.1-dsh020rc2.1`, first public prerelease; internal name remains `@dsh-local/sillytavern-bridge`.
 - Target: Windows DSH Desktop **`0.2.0-rc.2`**, local SillyTavern **`1.19.0`**. Other versions are unverified; neither application is automatically upgraded.
 - **Download/install SillyTavern and Node.js 24 first, including Tavern's dependencies.** Its directory must contain server.js, package.json and node_modules/. Follow the [official Windows guide](https://docs.sillytavern.app/installation/windows/) and obtain an appropriate version from [official releases](https://github.com/SillyTavern/SillyTavern/releases).
 - Enable DSH's right-pane Browser plugin. Confirm ordinary DSH chat and standalone Tavern work first.
@@ -30,7 +30,7 @@ An independent community integration, not an official DeepSeek or SillyTavern pr
 2. Paste the complete URL below into **Package name or address**, **not Registry / Custom address**:
 
 ```text
-https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.0-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-bridge-v0.3.1-dsh020rc2.1/dsh-local-sillytavern-bridge-0.3.1-dsh020rc2.1.tgz
 ```
 
 3. Keep the default registry; it controls npm dependencies, not the GitHub URL.
@@ -40,10 +40,10 @@ https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/download/sillytavern-
 
 ### Local package or source directory
 
-Download the standalone `.tgz` from the [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.0-dsh020rc2.1), without extracting it. Enter its actual absolute path in the same input, for example:
+Download the standalone `.tgz` from the [Release](https://github.com/hechucaixuanzhi/my-dsh-plugins/releases/tag/sillytavern-bridge-v0.3.1-dsh020rc2.1), without extracting it. Enter its actual absolute path in the same input, for example:
 
 ```text
-file:D:/DSH-plugins/downloads/dsh-local-sillytavern-bridge-0.3.0-dsh020rc2.1.tgz
+file:D:/DSH-plugins/downloads/dsh-local-sillytavern-bridge-0.3.1-dsh020rc2.1.tgz
 ```
 
 A checkout's single-plugin directory, such as `D:/my-dsh-plugins/plugins/sillytavern-bridge`, is also usable. The whole repository URL, root directory, plugins parent and generated Source code archives are not standalone plugin installation sources. This package is not on npm; its name alone cannot download it.
@@ -51,13 +51,17 @@ A checkout's single-plugin directory, such as `D:/my-dsh-plugins/plugins/sillyta
 ## Share DSH models
 
 1. Configure and verify the required models in DSH. Enable sharing only on a trusted local machine; model calls follow provider billing rules.
-2. Explicitly enable model sharing in plugin settings. Optionally enter comma-separated provider IDs. Empty means all currently registered providers' listed models; enter an exact DSH provider ID to restrict sharing.
+2. Enable sharing and auto-connect in plugin settings. This also authorizes installation of a local Tavern helper, backup and update of the signed-in user's connection settings. Optionally restrict provider IDs; empty means all registered providers' listed models.
 3. Save, then reopen the Tavern entry. The gateway starts with the entry, using **port 8100 by default, bound only to loopback**. Choose another 1024–65535 port if needed, different from Tavern's port.
-4. Obtain the generated **Base URL** and **local gateway key** from settings. This independent random access key is **not a provider API key**. It is returned only after explicitly revealing it, never in ordinary state responses.
-5. In Tavern choose **Chat Completion → Custom (OpenAI-compatible)**, enter that Base URL and local key, then Connect to refresh models. IDs use `provider/model`.
-6. After changes to DSH's registered model configuration, reconnect Tavern to refresh the catalog. DSH still owns credentials/endpoints. Catalog presence does not prove that authentication, quota or account policy permits a call.
+4. The plugin installs the lightweight **DSH Tavern Bridge** Tavern extension. After page readiness it uses native settings/secret APIs to save the current user's Custom endpoint, local gateway key, shared model and Auto-connect to Last Server switch, then connects. **No manual key entry or Connect click is required.** No generation request is sent.
+5. Keep the selected model if still shared, otherwise select the first. Clear old Custom extra headers/body overrides/exclusions to avoid interference from previous providers. Model IDs use `provider/model`.
+6. Reopening the DSH entry refreshes the catalog. Ordinary page refresh uses Tavern's built-in auto-connect. DSH and its gateway must remain running; catalog presence does not prove upstream authentication or quota.
 
-Initial connection fields require manual entry or separate authorization for DSH to edit those exact fields. The plugin **never silently overwrites** Tavern connection settings or copies real provider keys into them.
+Tavern extensions and DSH Tavern Bridge must be enabled, with a writable installation. Auto-connect requires **SillyTavern 1.19.0**; other versions fail visibly. With user accounts, log in normally and reopen the DSH entry; login is never bypassed. Close other pages editing connection settings to avoid competing saves.
+
+First connection saves prior connection fields, auto-connect switch and Custom secret ID in the current user's `extension_settings.dsh_tavern_bridge.previousConnection`; old keys remain in Tavern's secret store. To restore, disable sharing, restore snapshot fields/switch and select the old key in Tavern's key manager. Disabling sharing does not overwrite later user edits; without a fresh handoff the helper never rewrites connections. Never upload settings or secret stores.
+
+The single-use handoff expires after two minutes and travels in a promptly removed URL fragment. Persistent gateway keys never enter URLs, extension source or ordinary state. Extension updates retain local `.bak` copies and validate owned code; unrelated files or local edits block overwrites. Manual key reveal remains available for troubleshooting.
 
 ### Compatibility limits
 

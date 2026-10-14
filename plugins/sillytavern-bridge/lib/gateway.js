@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { randomUUID, timingSafeEqual } from 'node:crypto';
+import { randomUUID, randomBytes, timingSafeEqual } from 'node:crypto';
 
 const MAX_BODY = 2 * 1024 * 1024;
 const MAX_OUTPUT = 8 * 1024 * 1024;
@@ -104,9 +104,10 @@ async function readBody(req) {
   try { return JSON.parse(Buffer.concat(pieces).toString('utf8')); } catch { throw new BridgeError(400, 'Invalid JSON'); }
 }
 
-export function createGateway({ llm, key, port = 8100, tavernPort = 8000, sharedProviders = [], timeoutMs = 180000 }) {
+export function createGateway({ llm, key, port = 8100, tavernPort = 8000, sharedProviders = [], timeoutMs = 180000, handoffTtlMs = 120000, now = Date.now }) {
   if (typeof key !== 'string' || !/^[a-f0-9]{64}$/.test(key)) throw new Error('A generated local gateway key is required');
   const active = new Set(); let disposed = false;
+  const handoffs = new Map();
   const origins = new Set(['127.0.0.1', 'localhost'].map(host => `http://${host}:${tavernPort}`));
   const server = http.createServer(async (req, res) => {
     let controller, timer, abort;
@@ -120,6 +121,16 @@ export function createGateway({ llm, key, port = 8100, tavernPort = 8000, shared
       if (req.headers.origin) { res.setHeader('Access-Control-Allow-Origin', req.headers.origin); res.setHeader('Vary', 'Origin'); }
       const route = new URL(req.url, 'https://example.invalid').pathname;
       if (req.method === 'OPTIONS') { res.writeHead(204, { 'Access-Control-Allow-Methods': 'GET, POST', 'Access-Control-Allow-Headers': 'Authorization, Content-Type' }); res.end(); return; }
+      if (req.method === 'POST' && route === '/bridge/connect') {
+        // This capability is issued only by the authenticated DSH start route.
+        // Require a Tavern browser Origin and consume it before any async work.
+        const token = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.authorization || '')?.[1];
+        const expires = handoffs.get(token); handoffs.delete(token);
+        if (!origins.has(req.headers.origin) || !expires || expires <= now()) throw new BridgeError(401, 'Connection handoff expired or unavailable');
+        const models = await modelCatalog(llm, sharedProviders);
+        if (!models.length) throw new BridgeError(409, 'No shared DSH models; configure models in DSH first');
+        json(res, 200, { key, models }); return;
+      }
       if (!authenticated(req.headers.authorization, key)) throw new BridgeError(401, 'Local gateway API key required', 'authentication_error');
       if (req.method === 'GET' && route === '/health') { json(res, 200, { ok: true, service: '@dsh-local/sillytavern-bridge', activeRequests: active.size }); return; }
       if (req.method === 'GET' && route === '/v1/models') { json(res, 200, { object: 'list', data: await modelCatalog(llm, sharedProviders) }); return; }
@@ -140,10 +151,16 @@ export function createGateway({ llm, key, port = 8100, tavernPort = 8000, shared
   return {
     get activeRequests() { return active.size; },
     get port() { return server.address()?.port; },
+    issueHandoff() {
+      if (disposed || !server.listening) throw new BridgeError(503, 'Gateway is not ready');
+      for (const [token, expires] of handoffs) if (expires <= now()) handoffs.delete(token);
+      if (handoffs.size >= 32) handoffs.delete(handoffs.keys().next().value);
+      const token = randomBytes(32).toString('hex'); handoffs.set(token, now() + handoffTtlMs); return token;
+    },
     async start() {
       await new Promise((resolve, reject) => { const fail = () => { server.off('listening', ready); reject(new Error('网关端口不可用；不会接管旧网关 / Gateway port unavailable; existing service not adopted')); }; const ready = () => { server.off('error', fail); resolve(); }; server.once('error', fail); server.once('listening', ready); server.listen(port, '127.0.0.1'); });
       server.on('error', () => {});
     },
-    async close() { disposed = true; for (const request of active) request.abort(); if (!server.listening) return; const finished = new Promise(resolve => server.close(resolve)); server.closeAllConnections(); await finished; },
+    async close() { disposed = true; handoffs.clear(); for (const request of active) request.abort(); if (!server.listening) return; const finished = new Promise(resolve => server.close(resolve)); server.closeAllConnections(); await finished; },
   };
 }
